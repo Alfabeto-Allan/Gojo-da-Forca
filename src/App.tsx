@@ -36,14 +36,14 @@ function App() {
   const [contadorKaisenDerrota, aumentaContadorKaisenDerrota] = useState(0)
   const [jogoIniciado, setJogoIniciado] = useState(false)
   const [gamestartKey, setGamestartKey] = useState(0)
-  const [playingMusic, setPlayingMusic] = useState(true);
+  const [playingMusic, setPlayingMusic] = useState<boolean>(true);
 
   const letrasIncorretas = letrasAdivinhadas.filter(
     (letra) => !palavraEscolhida.includes(letra)
   )
 
   const kaisenPerdida = letrasIncorretas.length >= 5
-  const kaisenVencida = palavraEscolhida && palavraEscolhida.split("").every(letra=> letrasAdivinhadas.includes(letra))
+  const kaisenVencida = palavraEscolhida && palavraEscolhida.split("").every(letra => letrasAdivinhadas.includes(letra))
 
   const adicionaLetraAdivinhada = useCallback((letra: string) => {
     if (!palavraEscolhida || letrasAdivinhadas.includes(letra) || kaisenPerdida || kaisenVencida) return
@@ -52,7 +52,7 @@ function App() {
   }, [letrasAdivinhadas, kaisenPerdida, kaisenVencida, palavraEscolhida])
 
   useEffect(() => {
-    const handler = (e: eventoAlfabeto) => {
+    const handler = (e: KeyboardEvent) => {
       const key = e.key
 
       if (!key.match(/^[a-ç]$/) || !jogoIniciado) return
@@ -67,9 +67,9 @@ function App() {
       document.removeEventListener("keypress", handler)
     }
   }, [letrasAdivinhadas, jogoIniciado, adicionaLetraAdivinhada])
-  
+
   useEffect(() => {
-    const handler = (e: eventoAlfabeto) => {
+    const handler = (e: KeyboardEvent) => {
       const key = e.key
 
       if (key !== "Enter" || !jogoIniciado) return
@@ -113,13 +113,13 @@ function App() {
     <Agregador className='App'>
       {!jogoIniciado && (
         <div style={{display: "flex", justifyContent: "center", flexDirection: "column", width: "80%"}}>
-          <p style={{textAlign: "center"}}>Gojo Goatoru está prestes a lutar contra o fraudekuna! <br>
-            </br>Os dois irão expandir seus domínios, e cada milésimo de segundo conta. Ganha quem expandir seu domínio primeiro!<br>
-            </br>O cérebro dele precisa associar todas as palavras relacionadas à Jujutsu.<br>
-            </br>Assim, ele poderá lançar o Vazio Infinito antes da Cozinha Malevolente.<br>
-            </br>Ajude-o, ou o nosso Gojo pode acabar ficando em pedaços...<br>
-            </br>Dica: aperte "Enter" para resetar.
-            </p>
+          <p style={{textAlign: "center"}}>Gojo Goatoru está prestes a lutar contra o fraudekuna! <br />
+            Os dois irão expandir seus domínios, e cada milésimo de segundo conta. Ganha quem expandir seu domínio primeiro!<br />
+            O cérebro dele precisa associar todas as palavras relacionadas à Jujutsu.<br />
+            Assim, ele poderá lançar o Vazio Infinito antes da Cozinha Malevolente.<br />
+            Ajude-o, ou o nosso Gojo pode acabar ficando em pedaços...<br />
+            Dica: aperte "Enter" para resetar.
+          </p>
           <button style={{width: "15rem", alignSelf: "center"}} onClick={iniciarJogo} onMouseEnter={() => { const audio = new Audio(sokamono); audio.play(); }}>Expansão de Domínio!</button>
         </div>
       )}
@@ -134,12 +134,12 @@ function App() {
           {kaisenVencida && (<audio src={musica_vitoria} autoPlay></audio>)}
           {playingMusic && (<audio src={musica} autoPlay loop={true}></audio>)}
           <h2>Vitórias {contadorKaisenVitoria} - Derrotas {contadorKaisenDerrota}</h2>
-          <Gojo damageTaken={letrasIncorretas.length} kaisenVencida={kaisenVencida}/>
+          <Gojo damageTaken={letrasIncorretas.length} kaisenVencida={kaisenVencida} />
           <Palavra revela={kaisenPerdida} palavra={palavraEscolhida} letrasAdivinhadas={letrasAdivinhadas} />
           <Alfabeto disabled={kaisenVencida || kaisenPerdida}
-          letraAtiva={letrasAdivinhadas.filter(letra => palavraEscolhida.includes(letra))} 
-          letraInativa={letrasIncorretas}
-          adicionaLetraAdivinhada={adicionaLetraAdivinhada}/>
+            letraAtiva={letrasAdivinhadas.filter(letra => palavraEscolhida.includes(letra))}
+            letraInativa={letrasIncorretas}
+            adicionaLetraAdivinhada={adicionaLetraAdivinhada} />
         </>
       )}
     </Agregador>
@@ -147,25 +147,23 @@ function App() {
 }
 
 const esvaecer = keyframes`
-
-    0% {
-      left: -100%;
-    }
-    5% {
+  0% {
+    left: -100%;
+  }
+  5% {
     left: 0;
   }
-    50% {
+  50% {
     opacity: 1;
-}
-99% {
+  }
+  99% {
     opacity: 0;
     z-index: 0;
-}
-
-100% {
-     opacity: 0;
-     z-index: -1;
-}
+  }
+  100% {
+    opacity: 0;
+    z-index: -1;
+  }
 `
 
 const Gamestart = styled.img`
@@ -179,24 +177,23 @@ const Gamestart = styled.img`
 `
 
 const esvaecer2 = keyframes`
-    0% {
-      right: -100%;
-    }
-    5% {
+  0% {
+    right: -100%;
+  }
+  5% {
     right: 0;
   }
-    50% {
+  50% {
     opacity: 1;
-    }
-    99% {
-        opacity: 0;
-        z-index: 0;
-    }
-
-    100% {
-        opacity: 0;
-        z-index: -1;
-    }
+  }
+  99% {
+    opacity: 0;
+    z-index: 0;
+  }
+  100% {
+    opacity: 0;
+    z-index: -1;
+  }
 `
 
 const Gamestart2 = styled.img`

@@ -128,7 +128,7 @@ const Red = styled.img`
 
 interface damageTakenProps {
   damageTaken: number;
-  kaisenVencida: boolean;
+  kaisenVencida: string | boolean;
 }
 
 export default function Gojo({ damageTaken, kaisenVencida }: damageTakenProps ) {
